@@ -1,6 +1,6 @@
 from time import *
 from decimal import *
-import pickle , os
+import pickle , os , math
 print('WELCOME TO THE PROGRESSIVE PI CALCULATOR!')
 print('''This calculator will calculate the digits of pi for however long you
 set it to calculate for, and remember its progress when you start
@@ -13,10 +13,12 @@ Please respond in whole numbers here:\t''')
 LengthOfRuntime = int(LengthOfRuntime)
 LengthOfRuntimeSecs = (LengthOfRuntime * 60)
 StartTime = time()
-EndTime = StartTime + LengthOfRuntimeSecs
+EndTime = (StartTime + LengthOfRuntimeSecs)
 CurrentTime = time()
 NumberOfItsCompleted = 0
 IsPos = True
+TimeRemaining = ((EndTime - CurrentTime) / 60)
+TimeSinceLastCountdownPrint = StartTime
 if not os.path.isfile('CurrentABCterms.dat'):
      aTerm = Decimal(2)
      bTerm = Decimal(3)
@@ -73,6 +75,16 @@ while (CurrentTime < EndTime):
      else:
           OperationNeg = Decimal(-4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationNeg)
+     PrintCountdownYet = int(math.floor(CurrentTime - TimeSinceLastCountdownPrint))
+     TimeRemaining = int(math.ceil((EndTime - CurrentTime) / 60))
+     if TimeRemaining > 1:
+          if PrintCountdownYet >= 60:
+               print('\n***There Are About' , TimeRemaining , 'Minutes Remaining Until Finish.***')
+               TimeSinceLastCountdownPrint = time()
+     else:
+          if PrintCountdownYet >= 60:
+               print('\n***There Is About' , TimeRemaining , 'Minute Remaining Until Finish.***')
+               TimeSinceLastCountdownPrint = time()
      aTerm += 2
      bTerm += 2
      cTerm += 2
@@ -80,16 +92,16 @@ while (CurrentTime < EndTime):
      NumberOfItsCompleted += 1
      CurrentTime = time()
      
-print('Time\'s Up!')
-print(''''So Far, This Is What We Have Calculated Of Pi (Note: The
+print('\n\n\n\n\nTime\'s Up!')
+print('''\nSo Far, This Is What We Have Calculated Of Pi (Note: The
 Longer You Let Me Run, And The More I Calculate, The More
-Accurate This Number Will Become):\n''' , CurrentPiNum)
-print('The Number Of Iterations Completed Today Is:\t' , NumberOfItsCompleted)
+Accurate This Number Will Become):\n''' , CurrentPiNum , sep='')
+print('\nThe Number Of Iterations Completed Today Is:\t' , NumberOfItsCompleted)
 TotalNumOfItsCompleted = (NumberOfItsCompleted + TotalNumOfItsCompleted)
-print('The Number Of Iterations Completed In Total Is:\t' , TotalNumOfItsCompleted)
-print('''In Total, You Have Ordered Your Computer To Calculate Pi
+print('\nThe Number Of Iterations Completed In Total Is:\t' , TotalNumOfItsCompleted)
+print('''\nIn Total, You Have Ordered Your Computer To Calculate Pi
 For Around''' , TotalTimeIncludingNow , 'minute(s)!')
-print('''Please wait while we clean up and save our progress; we will inform
+print('''\n\nPlease wait while we clean up and save our progress; we will inform
 you when we have finished...''')
 #Update TotalTime, abcTerms, TotalNumOfItsCompleted, and CurrentPiNum
 TotalTimeFile = open('TotalTime.dat' , 'wb')
@@ -109,4 +121,4 @@ CurrentPiNumFile = open('CurrentPiNum.dat' , 'wb')
 pickle.dump(CurrentPiNum , CurrentPiNumFile)
 CurrentPiNumFile.close()
 
-print('We have finished saving our progress! Goodbye!')
+print('\n\nWe have finished saving our progress! Goodbye!')
