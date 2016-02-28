@@ -1,6 +1,6 @@
 from time import *
 from decimal import *
-getcontext().prec = 1000000
+getcontext().prec = 1000
 import pickle , os , math
 print('WELCOME TO THE PROGRESSIVE PI CALCULATOR!')
 print('''This calculator will calculate the digits of pi for however long you
@@ -73,9 +73,11 @@ while (CurrentTime < EndTime):
      if IsPos:
           OperationPos = Decimal(4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationPos)
+          print(OperationPos)
      else:
           OperationNeg = Decimal(-4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationNeg)
+          print(OperationNeg)
      PrintCountdownYet = int(math.floor(CurrentTime - TimeSinceLastCountdownPrint))
      TimeRemaining = int(math.ceil((EndTime - CurrentTime) / 60))
      if TimeRemaining > 1:
@@ -92,11 +94,20 @@ while (CurrentTime < EndTime):
      IsPos = not IsPos
      NumberOfItsCompleted += 1
      CurrentTime = time()
-     
+
+OperationPos = str(OperationPos)
+OperationNeg = str(OperationNeg)
+OperationPosForIntersect = {}
+OperationNegForIntersect = {}
+for i in OperationPos:
+     OperationPosForIntersect.add(i)
+for i in OperationNeg:
+     OperationNegForIntersect.add(i)
+CurrentPiNumRefined = OperationPosForIntersect.intersection(OperationNegForIntersect)     
 print('\n\n\n\n\nTime\'s Up!')
 print('''\nSo Far, This Is What We Have Calculated Of Pi (Note: The
 Longer You Let Me Run, And The More I Calculate, The More
-Accurate This Number Will Become):\n''' , CurrentPiNum , sep='')
+Accurate This Number Will Become):\n''' , CurrentPiNumRefined , sep='')
 print('\nThe Number Of Iterations Completed Today Is:\t' , NumberOfItsCompleted)
 TotalNumOfItsCompleted = (NumberOfItsCompleted + TotalNumOfItsCompleted)
 print('\nThe Number Of Iterations Completed In Total Is:\t' , TotalNumOfItsCompleted)
