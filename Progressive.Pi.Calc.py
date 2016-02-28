@@ -1,5 +1,6 @@
 from time import *
 from decimal import *
+getcontext().prec = 1000000
 import pickle , os , math
 print('WELCOME TO THE PROGRESSIVE PI CALCULATOR!')
 print('''This calculator will calculate the digits of pi for however long you
