@@ -21,7 +21,7 @@ IsPos = True
 TimeRemaining = ((EndTime - CurrentTime) / 60)
 TimeSinceLastCountdownPrint = StartTime
 if not os.path.isfile('ActualPiNum.dat'):
-     ActualPiNum=''''3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865
+     ActualPiNum='''3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865
      13282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964428810975665933446128475648233786
      78316527120190914564856692346034861045432664821339360726024914127372458700660631558817488152092096282925409171536436789259036
      00113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912
@@ -89,9 +89,11 @@ while (CurrentTime < EndTime):
      if IsPos:
           OperationPos = Decimal(4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationPos)
+          IntOneForIntersect = str(CurrentPiNum)
      else:
           OperationNeg = Decimal(-4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationNeg)
+          IntTwoForIntersect = str(CurrentPiNum)
      PrintCountdownYet = int(math.floor(CurrentTime - TimeSinceLastCountdownPrint))
      TimeRemaining = int(math.ceil((EndTime - CurrentTime) / 60))
      if TimeRemaining > 1:
@@ -109,12 +111,9 @@ while (CurrentTime < EndTime):
      NumberOfItsCompleted += 1
      CurrentTime = time()
 
-IntTwoForIntersect = CurrentPiNum
-IntOneForIntersect = str(IntOneForIntersect)
-IntTwoForIntersect = str(IntTwoForIntersect)
 def IntersectsInStrings(string1 , string2):
-     global CurrentPiNumRefined
-     CurrentPiNumRefined = ''
+     global StringIntersection
+     StringIntersection = ''
      string1len = len(string1)
      string2len = len(string2)
      if string1len <= string2len:
@@ -125,14 +124,14 @@ def IntersectsInStrings(string1 , string2):
           longerstring = string1
      lenshorterstring = len(shorterstring)
      for i in range(0 , lenshorterstring):
-          shorterstringord = ord(shorterstring[i])
-          longerstringord = ord(longerstring[i])
-          aresame = (shorterstringord == longerstringord)
-          if aresame:
-               CurrentPiNumRefined += shorterstring[i]
-print(IntOneForIntersect , IntTwoForIntersect)
-IntersectsInStrings(ActualPiNum , IntTwoForIntersect)
-   
+          currentshorterstringchr = shorterstring[i]
+          currentlongerstringchr = longerstring[i]
+          if (currentshorterstringchr == currentlongerstringchr):
+               StringIntersection += currentshorterstringchr
+          else:
+               break
+IntersectsInStrings(IntOneForIntersect , IntTwoForIntersect)
+CurrentPiNumRefined = StringIntersection
 print('\n\n\n\n\nTime\'s Up!')
 print('''\nSo Far, This Is What We Have Calculated Of Pi (Note: The
 Longer You Let Me Run, And The More I Calculate, The More
