@@ -73,11 +73,11 @@ while (CurrentTime < EndTime):
      if IsPos:
           OperationPos = Decimal(4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationPos)
-          print(OperationPos)
+          IntOneForIntersect = CurrentPiNum
      else:
           OperationNeg = Decimal(-4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationNeg)
-          print(OperationNeg)
+          IntTwoForIntersect = CurrentPiNum
      PrintCountdownYet = int(math.floor(CurrentTime - TimeSinceLastCountdownPrint))
      TimeRemaining = int(math.ceil((EndTime - CurrentTime) / 60))
      if TimeRemaining > 1:
@@ -95,15 +95,28 @@ while (CurrentTime < EndTime):
      NumberOfItsCompleted += 1
      CurrentTime = time()
 
-OperationPos = str(OperationPos)
-OperationNeg = str(OperationNeg)
-OperationPosForIntersect = {}
-OperationNegForIntersect = {}
-for i in OperationPos:
-     OperationPosForIntersect.add(i)
-for i in OperationNeg:
-     OperationNegForIntersect.add(i)
-CurrentPiNumRefined = OperationPosForIntersect.intersection(OperationNegForIntersect)     
+IntOneForIntersect = str(IntOneForIntersect)
+IntTwoForIntersect = str(IntTwoForIntersect)
+def IntersectsInStrings(string1 , string2):
+     global CurrentPiNumRefined
+     CurrentPiNumRefined = ''
+     string1len = len(string1)
+     string2len = len(string2)
+     if string1len <= string2len:
+          shorterstring = string1
+          longerstring = string2
+     else:
+          shorterstring = string2
+          longerstring = string1
+     lenshorterstring = len(shorterstring)
+     for i in range(0 , lenshorterstring):
+          shorterstringord = ord(shorterstring[i])
+          longerstringord = ord(longerstring[i])
+          aresame = (shorterstringord == longerstringord)
+          if aresame:
+               CurrentPiNumRefined += shorterstring[i]
+IntersectsInStrings(IntOneForIntersect , IntTwoForIntersect)
+   
 print('\n\n\n\n\nTime\'s Up!')
 print('''\nSo Far, This Is What We Have Calculated Of Pi (Note: The
 Longer You Let Me Run, And The More I Calculate, The More
