@@ -20,6 +20,23 @@ NumberOfItsCompleted = 0
 IsPos = True
 TimeRemaining = ((EndTime - CurrentTime) / 60)
 TimeSinceLastCountdownPrint = StartTime
+if not os.path.isfile('ActualPiNum.dat'):
+     ActualPiNum=''''3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865
+     13282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964428810975665933446128475648233786
+     78316527120190914564856692346034861045432664821339360726024914127372458700660631558817488152092096282925409171536436789259036
+     00113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912
+     279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271
+     452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136
+     297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378
+     387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959
+     092164201989'''
+     ActualPiNumFile = open('ActualPiNum.dat' , 'wb')
+     pickle.dump(ActualPiNum , ActualPiNumFile)
+     ActualPiNumFile.close()
+else:
+     ActualPiNumFile = open('ActualPiNum.dat' , 'rb')
+     ActualPiNum = pickle.load(ActualPiNumFile)
+     ActualPiNumFile.close()
 if not os.path.isfile('CurrentABCterms.dat'):
      aTerm = Decimal(2)
      bTerm = Decimal(3)
@@ -67,17 +84,14 @@ else:
      TotalNumOfItsFile.close()
 
 TotalTimeIncludingNow = (TotalTime + LengthOfRuntime)
-
 while (CurrentTime < EndTime):
      MultipliedTerms = Decimal(aTerm*bTerm*cTerm)
      if IsPos:
           OperationPos = Decimal(4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationPos)
-          IntOneForIntersect = CurrentPiNum
      else:
           OperationNeg = Decimal(-4/MultipliedTerms)
           CurrentPiNum = Decimal(CurrentPiNum + OperationNeg)
-          IntTwoForIntersect = CurrentPiNum
      PrintCountdownYet = int(math.floor(CurrentTime - TimeSinceLastCountdownPrint))
      TimeRemaining = int(math.ceil((EndTime - CurrentTime) / 60))
      if TimeRemaining > 1:
@@ -95,6 +109,7 @@ while (CurrentTime < EndTime):
      NumberOfItsCompleted += 1
      CurrentTime = time()
 
+IntTwoForIntersect = CurrentPiNum
 IntOneForIntersect = str(IntOneForIntersect)
 IntTwoForIntersect = str(IntTwoForIntersect)
 def IntersectsInStrings(string1 , string2):
@@ -115,7 +130,8 @@ def IntersectsInStrings(string1 , string2):
           aresame = (shorterstringord == longerstringord)
           if aresame:
                CurrentPiNumRefined += shorterstring[i]
-IntersectsInStrings(IntOneForIntersect , IntTwoForIntersect)
+print(IntOneForIntersect , IntTwoForIntersect)
+IntersectsInStrings(ActualPiNum , IntTwoForIntersect)
    
 print('\n\n\n\n\nTime\'s Up!')
 print('''\nSo Far, This Is What We Have Calculated Of Pi (Note: The
