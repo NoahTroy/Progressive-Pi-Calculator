@@ -22,12 +22,25 @@ def Startup():
 	LengthOfRuntime = input('''\nFor how many minutes would you like the calculator to run?
 	Please respond in whole numbers here:\t''')
 	#Convert Inputted Runtime To More Easily Calculated Seconds:
+	#Initialize Variables As Global:
+	global LengthOfRuntime
+	global LengthOfRuntimeSecs
 	LengthOfRuntime = int(LengthOfRuntime)
 	LengthOfRuntimeSecs = (LengthOfRuntime * 60)
 
 
 def LoadFiles():
 	#Check For And Create/Load The Current Multiplied Terms (Note: They Have Been Condensed To A List For Storage, So They Must Now Be Expanded):
+	
+	#Initialize global variables:
+	global aTerm
+	global bTerm
+	global cTerm
+	global CurrentPiNum
+	global TotalTime
+	global TotalNumOfItsCompleted
+	
+	
 	if not os.path.isfile('CurrentABCterms.dat'):
 		aTerm = Decimal(2)
 		bTerm = Decimal(3)
@@ -78,7 +91,23 @@ def LoadFiles():
 		TotalNumOfItsFile.close()
 
 
-def MainCalculation():
+def MainCalculation(aTerm , bTerm , cTerm, CurrentPiNum):
+	#Initialize All Variables As global:
+	global CurrentTime
+	global StartTime
+	global EndTime
+	global TimeRemaining
+	global TotalTimeIncludingNow
+	global NumberOfItsCompleted
+	global IsPos
+	global TimeSinceLastCountdownPrint
+	global OperationPos
+	global OperationNeg
+	global MultipliedTerms
+	global IntOneForIntersect
+	global IntTwoForIntersect
+	global TimeRemaining
+	global PrintCountdownYet
 	#Define A Starting, Ending, Remaining, And Total Time For The Program:
 	CurrentTime = time()
 	StartTime = time()
@@ -160,7 +189,7 @@ def IntersectsInStrings(string1 , string2):
 
 #Save Progress For Next Time By Writing The New Updated Values To The Data Files:
 def SaveProgress():
-	print('''\n\nPlease wait while we clean up and save our progress; we will inform
+	print('''\n\n\n\n\n\n\n\n\nPlease wait while we clean up and save our progress; we will inform
 	you when we have finished...''')
 
 	TotalTimeFile = open('TotalTime.dat' , 'wb')
@@ -184,8 +213,8 @@ def SaveProgress():
 
 
 #Display The Results And Statistics:
-def ResultsAndStatistics():
-	print('''\nSo Far, This Is What We Have Calculated Of Pi (Note: The
+def ResultsAndStatistics(TotalNumOfItsCompleted):
+	print('''\n\n\n\n\n\n\n\n\n\n\n\nSo Far, This Is What We Have Calculated Of Pi (Note: The
 	Longer You Let Me Run, And The More I Calculate, The More
 	Accurate This Number Will Become):\n''' , StringIntersection , sep='')
 
@@ -198,9 +227,10 @@ def ResultsAndStatistics():
 	print('''\nIn Total, You Have Ordered Your Computer To Calculate Pi
 	For Around''' , TotalTimeIncludingNow , 'minute(s)!')
 
-	print('That\'s All! Goodbye!')
+	print('\n\n\n\nThat\'s All! Goodbye!')
 
 	exit()
+
 
 
 
@@ -208,8 +238,8 @@ def ResultsAndStatistics():
 #Run Through The Program:
 Startup()
 LoadFiles()
-MainCalculation()
+MainCalculation(aTerm , bTerm , cTerm , CurrentPiNum)
 IntersectsInStrings(IntOneForIntersect , IntTwoForIntersect)
 SaveProgress()
-ResultsAndStatistics()
+ResultsAndStatistics(TotalNumOfItsCompleted)
 ##################################################################################################
