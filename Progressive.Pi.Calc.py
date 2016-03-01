@@ -15,12 +15,12 @@ getcontext().prec = 10000
 def Startup():
 	print('WELCOME TO THE PROGRESSIVE PI CALCULATOR!')
 	print('''This calculator will calculate the digits of pi for however long you
-	set it, and remember its progress when you start it back up.
-	With every iteration, it gets a slightly more accurate calculation of pi.''')
+set it, and remember its progress when you start it back up.
+With every iteration, it gets a slightly more accurate calculation of pi.''')
 	print('''\nPLEASE NOTE: DO NOT END THE CALCULATOR PREMATURELY, AS
-	THIS WILL RESULT IN FAILURE TO SAVE DATA, OR WORSE.''')
+THIS WILL RESULT IN FAILURE TO SAVE DATA, OR WORSE.''')
 	LengthOfRuntime = input('''\nFor how many minutes would you like the calculator to run?
-	Please respond in whole numbers here:\t''')
+Please respond in a whole number here:\t''')
 	#Convert Inputted Runtime To More Easily Calculated Seconds:
 	#Initialize Variables As Global:
 	global LengthOfRuntime
@@ -190,7 +190,7 @@ def IntersectsInStrings(string1 , string2):
 #Save Progress For Next Time By Writing The New Updated Values To The Data Files:
 def SaveProgress():
 	print('''\n\n\n\n\n\n\n\n\nPlease wait while we clean up and save our progress; we will inform
-	you when we have finished...''')
+you when we have finished...''')
 
 	TotalTimeFile = open('TotalTime.dat' , 'wb')
 	pickle.dump(TotalTimeIncludingNow , TotalTimeFile)
@@ -209,14 +209,14 @@ def SaveProgress():
 	pickle.dump(CurrentPiNum , CurrentPiNumFile)
 	CurrentPiNumFile.close()
 
-	print('\n\nWe have finished saving our progress! Now Let\'s See The Results:!')
+	print('\n\nWe have finished saving our progress! Now Let\'s See The Results!')
 
 
 #Display The Results And Statistics:
 def ResultsAndStatistics(TotalNumOfItsCompleted):
 	print('''\n\n\n\n\n\n\n\n\n\n\n\nSo Far, This Is What We Have Calculated Of Pi (Note: The
-	Longer You Let Me Run, And The More I Calculate, The More
-	Accurate This Number Will Become):\n''' , StringIntersection , sep='')
+Longer You Let Me Run, And The More I Calculate, The More
+Accurate This Number Will Become):\n''' , StringIntersection , sep='')
 
 	print('\nThe Number Of Iterations Completed Today Is:\t' , NumberOfItsCompleted)
 
@@ -225,7 +225,7 @@ def ResultsAndStatistics(TotalNumOfItsCompleted):
 	print('\nThe Number Of Iterations Completed In Total Is:\t' , TotalNumOfItsCompleted)
 
 	print('''\nIn Total, You Have Ordered Your Computer To Calculate Pi
-	For Around''' , TotalTimeIncludingNow , 'minute(s)!')
+For Around''' , TotalTimeIncludingNow , 'minute(s)!')
 
 	print('\n\n\n\nThat\'s All! Goodbye!')
 
