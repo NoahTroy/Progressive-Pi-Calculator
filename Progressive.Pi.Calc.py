@@ -13,6 +13,9 @@ getcontext().prec = 10000
 
 #Opening Explanatory Messages:
 def Startup():
+	#Initialize Variables As Global:
+	global LengthOfRuntime
+	global LengthOfRuntimeSecs
 	print('WELCOME TO THE PROGRESSIVE PI CALCULATOR!')
 	print('''This calculator will calculate the digits of pi for however long you
 set it, and remember its progress when you start it back up.
@@ -22,9 +25,6 @@ THIS WILL RESULT IN FAILURE TO SAVE DATA, OR WORSE.''')
 	LengthOfRuntime = input('''\nFor how many minutes would you like the calculator to run?
 Please respond in a whole number here:\t''')
 	#Convert Inputted Runtime To More Easily Calculated Seconds:
-	#Initialize Variables As Global:
-	global LengthOfRuntime
-	global LengthOfRuntimeSecs
 	LengthOfRuntime = int(LengthOfRuntime)
 	LengthOfRuntimeSecs = (LengthOfRuntime * 60)
 
