@@ -109,6 +109,32 @@ Please respond in a whole number here:\t''')
 	LengthOfRuntimeSecs = (LengthOfRuntime * 60)
 
 
+#Save Progress For Next Time By Writing The New Updated Values To The Data Files:
+def SaveProgress():
+	#Load global Variables:
+	global CurrentPiNum , TotalNumOfItsCompleted , TotalTimeIncludingNow , NumberOfItsCompleted
+
+	TotalTimeFile = open('Delete Me To Reset Calculator/TotalTime.dat' , 'wb')
+	pickle.dump(TotalTimeIncludingNow , TotalTimeFile)
+	TotalTimeFile.close()
+
+	abcTermsList = [aTerm , bTerm , cTerm]
+	abcTerms = open('Delete Me To Reset Calculator/CurrentABCterms.dat' , 'wb')
+	pickle.dump(abcTermsList , abcTerms)
+	abcTerms.close()
+
+	#Determine The Total Number Of Iterations Completed, To Save And Later Display:
+	TotalNumOfItsCompleted += NumberOfItsCompleted
+
+	TotalNumOfItsFile = open('Delete Me To Reset Calculator/TotalNumOfItsCompleted.dat' , 'wb')
+	pickle.dump(TotalNumOfItsCompleted , TotalNumOfItsFile)
+	TotalNumOfItsFile.close()
+
+	CurrentPiNumFile = open('Delete Me To Reset Calculator/CurrentPiNum.dat' , 'wb')
+	pickle.dump(CurrentPiNum , CurrentPiNumFile)
+	CurrentPiNumFile.close()
+
+
 def MainCalculation():
 	#Initialize Needed Variables As global:
 	global TotalTimeIncludingNow
@@ -130,6 +156,9 @@ def MainCalculation():
 	NumberOfItsCompleted = 0
 	IsPos = True
 	TimeSinceLastCountdownPrint = StartTime
+	
+	#Starting Value For Counter To Determine When To Save Progress (Every Five Minutes):
+	SaveProgressYet = 0
 
 	#Start A Loop To Run The Program Until The Designated Time Period Is Up:
 	while (CurrentTime < EndTime):
@@ -165,6 +194,15 @@ def MainCalculation():
 				print('***There Are About' , TimeRemaining , 'Minutes Remaining Until Finish.***')
 				#Reset The Countdown Timer:
 				TimeSinceLastCountdownPrint = time()
+				#Update Progress Counter:
+				SaveProgressYet += 1
+				#Save Current Progress Every Five Minutes:
+				if SaveProgressYet >= 5:
+					SaveProgress()
+					print('\n\n' '''***We Have Just Automatically Saved Your Progress So Far, 
+And Will Continue To Do So Every Five Minutes!***''' , '\n')
+					#Reset Progress Counter:
+					SaveProgressYet = 0
 		else:
 			if PrintCountdownYet >= 60:
 				#Calculate Percentage Complete:
@@ -181,6 +219,8 @@ def MainCalculation():
 		IsPos = not IsPos
 		NumberOfItsCompleted += 1
 		CurrentTime = time()
+	#Save Progress At The End Of The Calculation Period:
+	SaveProgress()
 
 
 #Define A Function For Finding The Same Characters In The Same Position Between Two Strings, To Determine Which Digits Of Pi Are Accurrate:
@@ -205,37 +245,6 @@ def IntersectsInStrings(string1 , string2):
                break
 
 
-#Save Progress For Next Time By Writing The New Updated Values To The Data Files:
-def SaveProgress():
-	print('''\n\n\n\n\n\n\n\n\nPlease wait while we clean up and save our progress; we will inform
-you when we have finished...''')
-
-	#Load global Variables:
-	global CurrentPiNum , TotalNumOfItsCompleted , TotalTimeIncludingNow , NumberOfItsCompleted
-
-	TotalTimeFile = open('Delete Me To Reset Calculator/TotalTime.dat' , 'wb')
-	pickle.dump(TotalTimeIncludingNow , TotalTimeFile)
-	TotalTimeFile.close()
-
-	abcTermsList = [aTerm , bTerm , cTerm]
-	abcTerms = open('Delete Me To Reset Calculator/CurrentABCterms.dat' , 'wb')
-	pickle.dump(abcTermsList , abcTerms)
-	abcTerms.close()
-
-	#Determine The Total Number Of Iterations Completed, To Save And Later Display:
-	TotalNumOfItsCompleted += NumberOfItsCompleted
-
-	TotalNumOfItsFile = open('Delete Me To Reset Calculator/TotalNumOfItsCompleted.dat' , 'wb')
-	pickle.dump(TotalNumOfItsCompleted , TotalNumOfItsFile)
-	TotalNumOfItsFile.close()
-
-	CurrentPiNumFile = open('Delete Me To Reset Calculator/CurrentPiNum.dat' , 'wb')
-	pickle.dump(CurrentPiNum , CurrentPiNumFile)
-	CurrentPiNumFile.close()
-
-	print('\n\nWe have finished saving our progress! Now Let\'s See The Results!')
-
-
 #Display The Results And Statistics:
 def ResultsAndStatistics():
 	#Load global Variables:
@@ -245,9 +254,9 @@ def ResultsAndStatistics():
 Longer You Let Me Run, And The More I Calculate, The More
 Accurate This Number Will Become):\n''' , StringIntersection , sep='')
 
-	print('\nThe Number Of Iterations Completed Today Is:\t' , NumberOfItsCompleted)
+	print('\nNumber Of Iterations Completed This Session:\t' , NumberOfItsCompleted)
 
-	print('\nThe Number Of Iterations Completed In Total Is:\t' , TotalNumOfItsCompleted)
+	print('\nNumber Of Iterations Completed In Total:\t' , TotalNumOfItsCompleted)
 
 	print('''\nIn Total, You Have Ordered Your Computer To Calculate Pi
 For Around''' , TotalTimeIncludingNow , 'minute(s)!')
