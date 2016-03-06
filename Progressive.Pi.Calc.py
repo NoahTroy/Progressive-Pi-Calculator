@@ -160,6 +160,9 @@ def MainCalculation():
 	#Starting Value For Counter To Determine When To Save Progress (Every Five Minutes):
 	SaveProgressYet = 0
 
+	#Starting Message To Let The User Know That The Calculations Have Started:
+	print('\nWE HAVE STARTED CALCULATING PI') 
+
 	#Start A Loop To Run The Program Until The Designated Time Period Is Up:
 	while (CurrentTime < EndTime):
 		#Set The Product For The Terms Multiplied Together:
@@ -250,7 +253,7 @@ def ResultsAndStatistics():
 	#Load global Variables:
 	global TotalNumOfItsCompleted , TotalTimeIncludingNow , NumberOfItsCompleted , StringIntersection
 	
-	print('''\n\n\n\n\n\n\n\n\n\n\n\nSo Far, This Is What We Have Calculated Of Pi (Note: The
+	print('''\n\nSo Far, This Is What We Have Calculated Of Pi (Note: The
 Longer You Let Me Run, And The More I Calculate, The More
 Accurate This Number Will Become):\n''' , StringIntersection , sep='')
 
@@ -261,7 +264,7 @@ Accurate This Number Will Become):\n''' , StringIntersection , sep='')
 	print('''\nIn Total, You Have Ordered Your Computer To Calculate Pi
 For Around''' , TotalTimeIncludingNow , 'minute(s)!')
 
-	print('\n\n\n\nThat\'s All! Goodbye!')
+	print('\nThat\'s All! Goodbye!')
 
 	exit()
 
