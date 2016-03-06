@@ -11,6 +11,87 @@ import pickle , os , math
 getcontext().prec = 1000
 
 
+def LoadFiles():
+	#Initialize global variables:
+	global aTerm , bTerm , cTerm
+	global CurrentPiNum
+	global TotalTime
+	global TotalNumOfItsCompleted
+	
+
+	#Find The Path Of Our Main File:
+	filepath = os.path.abspath('PiCalc.py')
+	#Modify The Path To Get Rid Of Our Main File's Name:
+	filepathlisttemp = []
+	for chr in filepath:
+		filepathlisttemp += chr
+	lengthoffilepathlist = len(filepathlisttemp)
+	lengthofourfilename = 9
+	indextostartat = (lengthoffilepathlist - lengthofourfilename)
+	for i in range(indextostartat , lengthoffilepathlist):
+		filepathlisttemp.pop(indextostartat)
+	#Rewrite The filepath To Contain The Path Of The Directory Containing Our Main File:
+	filepath = ''
+	for chr in filepathlisttemp:
+		filepath += chr
+	#Add Our Folder Name To The filepath, Creating The Correct folderpath:
+	folderpath = filepath + 'Delete Me To Reset Calculator/'
+
+	#Determine Whether Or Not The Folder Exists, And Create It If It Does Not:
+	if not os.path.exists('Delete Me To Reset Calculator/'):
+		os.makedirs(folderpath)
+
+	#Check For And Create/Load Currently Saved a, b, and c Terms:
+	if not os.path.isfile('Delete Me To Reset Calculator/CurrentABCterms.dat'):
+		aTerm = Decimal(2)
+		bTerm = Decimal(3)
+		cTerm = Decimal(4)
+		abcTermsList = [aTerm , bTerm , cTerm]
+		abcTerms = open('Delete Me To Reset Calculator/CurrentABCterms.dat' , 'wb')
+		pickle.dump(abcTermsList , abcTerms)
+		abcTerms.close()
+	else:
+		abcTerms = open('Delete Me To Reset Calculator/CurrentABCterms.dat' , 'rb')
+		abcTermsList = pickle.load(abcTerms)
+		aTerm = abcTermsList[0]
+		bTerm = abcTermsList[1]
+		cTerm = abcTermsList[2]
+		abcTerms.close()
+	     
+	#Check For And Create/Load Currently Saved/Calculated Pi Number:
+	if not os.path.isfile('Delete Me To Reset Calculator/CurrentPiNum.dat'):
+		CurrentPiNum = Decimal(3)
+		CurrentPiNumFile = open('Delete Me To Reset Calculator/CurrentPiNum.dat' , 'wb')
+		pickle.dump(CurrentPiNum , CurrentPiNumFile)
+		CurrentPiNumFile.close()
+	else:
+		CurrentPiNumFile = open('Delete Me To Reset Calculator/CurrentPiNum.dat' , 'rb')
+		CurrentPiNum = pickle.load(CurrentPiNumFile)
+		CurrentPiNumFile.close()
+	
+	#Check For And Create/Load The Total Amount Of Time Ordered To Be Spent Calculating:
+	if not os.path.isfile('Delete Me To Reset Calculator/TotalTime.dat'):
+		TotalTime = int(0)
+		TotalTimeFile = open('Delete Me To Reset Calculator/TotalTime.dat' , 'wb')
+		pickle.dump(TotalTime , TotalTimeFile)
+		TotalTimeFile.close()
+	else:
+		TotalTimeFile = open('Delete Me To Reset Calculator/TotalTime.dat' , 'rb')
+		TotalTime = pickle.load(TotalTimeFile)
+		TotalTimeFile.close()
+
+	#Check For And Create/Load The Total Number Of Iterations Completed:
+	if not os.path.isfile('Delete Me To Reset Calculator/TotalNumOfItsCompleted.dat'):
+		TotalNumOfItsCompleted = int(0)
+		TotalNumOfItsFile = open('Delete Me To Reset Calculator/TotalNumOfItsCompleted.dat' , 'wb')
+		pickle.dump(TotalNumOfItsCompleted , TotalNumOfItsFile)
+		TotalNumOfItsFile.close()
+	else:
+		TotalNumOfItsFile = open('Delete Me To Reset Calculator/TotalNumOfItsCompleted.dat' , 'rb')
+		TotalNumOfItsCompleted = pickle.load(TotalNumOfItsFile)
+		TotalNumOfItsFile.close()
+
+
 #Opening Explanatory Messages:
 def Startup():
 	#Initialize Variables As Global:
@@ -26,66 +107,6 @@ Please respond in a whole number here:\t''')
 	#Convert Inputted Runtime To More Easily Calculated Seconds:
 	LengthOfRuntime = int(LengthOfRuntime)
 	LengthOfRuntimeSecs = (LengthOfRuntime * 60)
-
-
-def LoadFiles():
-	#Check For And Create/Load The Current Multiplied Terms (Note: They Have Been Condensed To A List For Storage, So They Must Now Be Expanded):
-	
-	#Initialize global variables:
-	global aTerm , bTerm , cTerm
-	global CurrentPiNum
-	global TotalTime
-	global TotalNumOfItsCompleted
-	
-	
-	if not os.path.isfile('CurrentABCterms.dat'):
-		aTerm = Decimal(2)
-		bTerm = Decimal(3)
-		cTerm = Decimal(4)
-		abcTermsList = [aTerm , bTerm , cTerm]
-		abcTerms = open('CurrentABCterms.dat' , 'wb')
-		pickle.dump(abcTermsList , abcTerms)
-		abcTerms.close()
-	else:
-		abcTerms = open('CurrentABCterms.dat' , 'rb')
-		abcTermsList = pickle.load(abcTerms)
-		aTerm = abcTermsList[0]
-		bTerm = abcTermsList[1]
-		cTerm = abcTermsList[2]
-		abcTerms.close()
-	     
-	#Check For And Create/Load Currently Saved/Calculated Pi Number:
-	if not os.path.isfile('CurrentPiNum.dat'):
-		CurrentPiNum = Decimal(3)
-		CurrentPiNumFile = open('CurrentPiNum.dat' , 'wb')
-		pickle.dump(CurrentPiNum , CurrentPiNumFile)
-		CurrentPiNumFile.close()
-	else:
-		CurrentPiNumFile = open('CurrentPiNum.dat' , 'rb')
-		CurrentPiNum = pickle.load(CurrentPiNumFile)
-		CurrentPiNumFile.close()
-	
-	#Check For And Create/Load The Total Amount Of Time Ordered To Be Spent Calculating:
-	if not os.path.isfile('TotalTime.dat'):
-		TotalTime = int(0)
-		TotalTimeFile = open('TotalTime.dat' , 'wb')
-		pickle.dump(TotalTime , TotalTimeFile)
-		TotalTimeFile.close()
-	else:
-		TotalTimeFile = open('TotalTime.dat' , 'rb')
-		TotalTime = pickle.load(TotalTimeFile)
-		TotalTimeFile.close()
-
-	#Check For And Create/Load The Total Number Of Iterations Completed:
-	if not os.path.isfile('TotalNumOfItsCompleted.dat'):
-		TotalNumOfItsCompleted = int(0)
-		TotalNumOfItsFile = open('TotalNumOfItsCompleted.dat' , 'wb')
-		pickle.dump(TotalNumOfItsCompleted , TotalNumOfItsFile)
-		TotalNumOfItsFile.close()
-	else:
-		TotalNumOfItsFile = open('TotalNumOfItsCompleted.dat' , 'rb')
-		TotalNumOfItsCompleted = pickle.load(TotalNumOfItsFile)
-		TotalNumOfItsFile.close()
 
 
 def MainCalculation():
@@ -192,23 +213,23 @@ you when we have finished...''')
 	#Load global Variables:
 	global CurrentPiNum , TotalNumOfItsCompleted , TotalTimeIncludingNow , NumberOfItsCompleted
 
-	TotalTimeFile = open('TotalTime.dat' , 'wb')
+	TotalTimeFile = open('Delete Me To Reset Calculator/TotalTime.dat' , 'wb')
 	pickle.dump(TotalTimeIncludingNow , TotalTimeFile)
 	TotalTimeFile.close()
 
 	abcTermsList = [aTerm , bTerm , cTerm]
-	abcTerms = open('CurrentABCterms.dat' , 'wb')
+	abcTerms = open('Delete Me To Reset Calculator/CurrentABCterms.dat' , 'wb')
 	pickle.dump(abcTermsList , abcTerms)
 	abcTerms.close()
 
 	#Determine The Total Number Of Iterations Completed, To Save And Later Display:
 	TotalNumOfItsCompleted += NumberOfItsCompleted
 
-	TotalNumOfItsFile = open('TotalNumOfItsCompleted.dat' , 'wb')
+	TotalNumOfItsFile = open('Delete Me To Reset Calculator/TotalNumOfItsCompleted.dat' , 'wb')
 	pickle.dump(TotalNumOfItsCompleted , TotalNumOfItsFile)
 	TotalNumOfItsFile.close()
 
-	CurrentPiNumFile = open('CurrentPiNum.dat' , 'wb')
+	CurrentPiNumFile = open('Delete Me To Reset Calculator/CurrentPiNum.dat' , 'wb')
 	pickle.dump(CurrentPiNum , CurrentPiNumFile)
 	CurrentPiNumFile.close()
 
@@ -240,8 +261,8 @@ For Around''' , TotalTimeIncludingNow , 'minute(s)!')
 
 ##################################################################################################
 #Run Through The Program:
-Startup()
 LoadFiles()
+Startup()
 MainCalculation()
 IntersectsInStrings(IntOneForIntersect , IntTwoForIntersect)
 SaveProgress()
