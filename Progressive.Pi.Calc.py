@@ -7,15 +7,14 @@ from time import *
 from decimal import *
 import pickle , os , math
 
-#Set the decimal to be accurate up to 10000 places after the decimal:
-getcontext().prec = 10000
+#Set the decimal to be accurate up to 1000 places after the decimal:
+getcontext().prec = 1000
 
 
 #Opening Explanatory Messages:
 def Startup():
 	#Initialize Variables As Global:
-	global LengthOfRuntime
-	global LengthOfRuntimeSecs
+	global LengthOfRuntime , LengthOfRuntimeSecs
 	print('WELCOME TO THE PROGRESSIVE PI CALCULATOR!')
 	print('''This calculator will calculate the digits of pi for however long you
 set it, and remember its progress when you start it back up.
@@ -33,9 +32,7 @@ def LoadFiles():
 	#Check For And Create/Load The Current Multiplied Terms (Note: They Have Been Condensed To A List For Storage, So They Must Now Be Expanded):
 	
 	#Initialize global variables:
-	global aTerm
-	global bTerm
-	global cTerm
+	global aTerm , bTerm , cTerm
 	global CurrentPiNum
 	global TotalTime
 	global TotalNumOfItsCompleted
@@ -91,23 +88,15 @@ def LoadFiles():
 		TotalNumOfItsFile.close()
 
 
-def MainCalculation(aTerm , bTerm , cTerm, CurrentPiNum):
-	#Initialize All Variables As global:
-	global CurrentTime
-	global StartTime
-	global EndTime
-	global TimeRemaining
+def MainCalculation():
+	#Initialize Needed Variables As global:
 	global TotalTimeIncludingNow
 	global NumberOfItsCompleted
-	global IsPos
-	global TimeSinceLastCountdownPrint
-	global OperationPos
-	global OperationNeg
-	global MultipliedTerms
-	global IntOneForIntersect
-	global IntTwoForIntersect
-	global TimeRemaining
-	global PrintCountdownYet
+	global IntOneForIntersect , IntTwoForIntersect
+
+	#Load global Variables:
+	global LengthOfRuntime , LengthOfRuntimeSecs , aTerm , bTerm , cTerm , CurrentPiNum , TotalTime
+
 	#Define A Starting, Ending, Remaining, And Total Time For The Program:
 	CurrentTime = time()
 	StartTime = time()
@@ -192,6 +181,9 @@ def SaveProgress():
 	print('''\n\n\n\n\n\n\n\n\nPlease wait while we clean up and save our progress; we will inform
 you when we have finished...''')
 
+	#Load global Variables:
+	global CurrentPiNum , TotalNumOfItsCompleted , TotalTimeIncludingNow , NumberOfItsCompleted
+
 	TotalTimeFile = open('TotalTime.dat' , 'wb')
 	pickle.dump(TotalTimeIncludingNow , TotalTimeFile)
 	TotalTimeFile.close()
@@ -200,6 +192,9 @@ you when we have finished...''')
 	abcTerms = open('CurrentABCterms.dat' , 'wb')
 	pickle.dump(abcTermsList , abcTerms)
 	abcTerms.close()
+
+	#Determine The Total Number Of Iterations Completed, To Save And Later Display:
+	TotalNumOfItsCompleted += NumberOfItsCompleted
 
 	TotalNumOfItsFile = open('TotalNumOfItsCompleted.dat' , 'wb')
 	pickle.dump(TotalNumOfItsCompleted , TotalNumOfItsFile)
@@ -213,15 +208,16 @@ you when we have finished...''')
 
 
 #Display The Results And Statistics:
-def ResultsAndStatistics(TotalNumOfItsCompleted):
+def ResultsAndStatistics():
+	#Load global Variables:
+	global TotalNumOfItsCompleted , TotalTimeIncludingNow , NumberOfItsCompleted , StringIntersection
+	
 	print('''\n\n\n\n\n\n\n\n\n\n\n\nSo Far, This Is What We Have Calculated Of Pi (Note: The
 Longer You Let Me Run, And The More I Calculate, The More
 Accurate This Number Will Become):\n''' , StringIntersection , sep='')
 
 	print('\nThe Number Of Iterations Completed Today Is:\t' , NumberOfItsCompleted)
 
-	#Determine The Total Number Of Iterations Completed, To Display:
-	TotalNumOfItsCompleted = (NumberOfItsCompleted + TotalNumOfItsCompleted)
 	print('\nThe Number Of Iterations Completed In Total Is:\t' , TotalNumOfItsCompleted)
 
 	print('''\nIn Total, You Have Ordered Your Computer To Calculate Pi
@@ -238,8 +234,8 @@ For Around''' , TotalTimeIncludingNow , 'minute(s)!')
 #Run Through The Program:
 Startup()
 LoadFiles()
-MainCalculation(aTerm , bTerm , cTerm , CurrentPiNum)
+MainCalculation()
 IntersectsInStrings(IntOneForIntersect , IntTwoForIntersect)
 SaveProgress()
-ResultsAndStatistics(TotalNumOfItsCompleted)
+ResultsAndStatistics()
 ##################################################################################################
